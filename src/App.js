@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import BoardCast from "./Views/BoardCast";
+import Message from "./Views/Message";
+import Layout from "./Components/Layout";
+import Home from "./Views/Home";
+import Login from "./Views/Login";
+import RequireAuth from "./Auth/Auth";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Routes>
+        <Route
+          element={
+            <RequireAuth>
+              <Layout />
+            </RequireAuth>
+          }
         >
-          Learn React
-        </a>
-      </header>
+          <Route path="/" element={<Home />} />
+          <Route path="boardcast" element={<BoardCast />} />
+          <Route path="message" element={<Message />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
   );
 }

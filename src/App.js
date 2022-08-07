@@ -6,6 +6,7 @@ import Layout from "./Components/Layout";
 import Home from "./Views/Home";
 import Login from "./Views/Login";
 import RequireAuth from "./Auth/Auth";
+import Demo from "./Components/Demo";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="message" element={<Message />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/demo" element={<Demo />} />
       </Routes>
     </div>
   );

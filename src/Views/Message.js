@@ -5,7 +5,7 @@ import RightSide from "./MessageComponents/RightSide";
 
 export default function Message() {
   return (
-    <Grid container spacing={0}>
+    <Grid>
       <Grid item xs={12} md={4}>
         <LeftSide />
       </Grid>

@@ -11,12 +11,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
+import axios from "axios";
 
 export default function Login() {
   let navigate = useNavigate();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
 
   const [validUser, setValidUser] = useState(false);
   const [validPw, setValidPw] = useState(false);
@@ -54,12 +55,32 @@ export default function Login() {
   const Submit = (evt) => {
     evt.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      if (username !== "" && password !== "") {
-        localStorage.setItem("isLogin", true);
-        navigate("/");
-      }
-    }, 2000);
+    var payload = {
+      username: username,
+      password: password,
+    };
+    axios
+      .post(
+        process.env.REACT_APP_API_Domain + "api/Authenticate/login",
+        payload
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.setItem("isLogin", true);
+          localStorage.setItem("token", response.data.token);
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        setMsg("Username or Password incorrect !");
+        setIsLoading(false);
+      });
+    // setTimeout(() => {
+    //   if (username !== "" && password !== "") {
+    //     localStorage.setItem("isLogin", true);
+    //     navigate("/");
+    //   }
+    // }, 2000);
   };
   return (
     <Grid
@@ -71,6 +92,8 @@ export default function Login() {
       sx={{
         height: "100%",
         background: "linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%)",
+        display: "flex",
+        flex: 1,
       }}
     >
       <Card>
@@ -132,6 +155,18 @@ export default function Login() {
               >
                 Login
               </LoadingButton>
+              <Typography
+                variant="h7"
+                sx={{
+                  fontFamily: "monospace",
+                  fontWeight: 100,
+                  textDecoration: "none",
+                  color: "red",
+                }}
+                align="center"
+              >
+                {msg}
+              </Typography>
             </Grid>
           </form>
         </CardContent>
